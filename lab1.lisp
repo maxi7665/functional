@@ -1,0 +1,2 @@
+; SLIME 2.24
+CL-USER> 1
