@@ -1,0 +1,64 @@
+domains
+
+officer = off(string, string, string).
+ 
+predicates
+
+nondeterm name (string)
+nondeterm zvanie (string)
+nondeterm rod (string)
+nondeterm soot (string,string,string)
+nondeterm resh (officer,officer,officer,officer,officer)
+nondeterm write_off(officer)
+ 
+clauses
+
+name("Янош").
+name("Ференц").
+name("Бела").
+name("Лайош").
+name("Андраш").
+
+zvanie("подполковник").
+zvanie("майор").
+zvanie("майор").
+zvanie("майор").
+zvanie("капитан").
+
+rod("летчик").
+rod("сапер").
+rod("связист").
+rod("артиллерист").
+rod("пехотинец").
+
+% Решение: X – имя, Y – звание, Z – род войск
+% Из условия 1 и 6 Янош - майор и не сапер
+soot(X,Y,Z):-name(X),zvanie(Y),rod(Z), X="Янош", Y="майор", Z <> "сапер".
+% Из условия 3 - Бела, Ференц и Лайош не летчики
+soot(X,Y,Z):-name(X),zvanie(Y),rod(Z), X="Ференц", Y <> "капитан", Y <> "подполковник", Z <> "летчик", Z <> "сапер", Z <> "связист", Z <> "пехотинец".
+% Из условия 5
+% Из условия 6 Лайош - капитан. Из условия 4 он не артиллерист, не сапер, не связист.
+soot(X,Y,Z):-name(X),zvanie(Y),rod(Z), X="Лайош", Y = "капитан", not (Z = "летчик"), not (Z = "артиллерист"), not (Z = "сапер"), not (Z = "связист").
+soot(X,Y,Z):-name(X),zvanie(Y),rod(Z), X="Бела", not (Y = "капитан"), not (Y = "майор"), not (Z = "летчик"), not (Z = "пехотинец"), not (Z = "артиллерист"), not (Z = "сапер").
+soot(X,Y,Z):-name(X),zvanie(Y),rod(Z), X="Андраш", not (Y = "капитан"), not (Y = "подполковник"), not (Z = "летчик"), not (Z = "пехотинец"), not (Z = "артиллерист"), not (Z = "связист").
+ 
+resh(Off1,Off2,Off3,Off4,Off5) :-
+X1="Янош",soot(X1,Y1,Z1), Off1=off(X1,Y1,Z1),
+X2="Ференц", soot(X2,Y2,Z2), Off2=off(X2,Y2,Z2),
+X3="Бела", soot(X3,Y3,Z3), Off3=off(X3,Y3,Z3),
+X4="Лайош", soot(X4,Y4,Z4), Off4=off(X4,Y4,Z4),
+X5="Андраш", soot(X5,Y5,Z5), Off5=off(X5,Y5,Z5),
+%Y1<>Y2, Y1<>Y3, Y1<>Y4, Y1<>Y5,
+%Y2 = Y3, Y2 = Y4, Y2 <> Y5,
+%Y3 = Y4, Y3<>Y5, Y4 <> Y5,
+Z1<>Z2, Z1<>Z3, Z1<>Z4,Z1<>Z5,
+Z2<>Z3, Z2<>Z4, Z2<>Z5,
+Z3<>Z4, Z3<>Z5, Z4<>Z5.
+ 
+write_off(off(X,Y,Z)):-write(X," звание - ",Y," род - ",Z),nl.
+ 
+goal
+ 
+resh (Off1, Off2, Off3, Off4, Off5),
+write_off(Off1),write_off(Off2),write_off(Off3),
+write_off(Off4),write_off(Off5).
