@@ -49,7 +49,7 @@
 
 ;(trace intersect)
 ;(print (myintersection '(1 2 2 3 4 5) '(1 2 5)))
-(print (myintersection '(a b c d e f) '(a b f g)))
+(print (myintersection '(a b c d e f g) '(a b f g)))
 
 
 
